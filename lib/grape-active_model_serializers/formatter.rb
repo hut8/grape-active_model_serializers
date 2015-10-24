@@ -17,7 +17,7 @@ module Grape
           options = build_options_from_endpoint(endpoint)
 
           serializer = options.fetch(:serializer, ActiveModel::Serializer.serializer_for(resource))
-          #return nil unless serializer
+          return nil unless serializer
 
           options[:scope] = endpoint unless options.key?(:scope)
           # ensure we have a root to fallback on
