@@ -17,12 +17,15 @@ module Grape
           options = build_options_from_endpoint(endpoint)
 
           serializer = options.fetch(:serializer, ActiveModel::Serializer.serializer_for(resource))
-          return nil unless serializer
+          #return nil unless serializer
 
           options[:scope] = endpoint unless options.key?(:scope)
-          # ensure we have an root to fallback on
+          # ensure we have a root to fallback on
           options[:resource_name] = default_root(endpoint) if resource.respond_to?(:to_ary)
-          serializer.new(resource, options.merge(other_options(env)))
+
+          serialization_options = options.merge(adapter: :json_api)
+          #serializer: other_options.merge(env)[:serializer])
+          ActiveModel::SerializableResource.new(resource, serialization_options)
         end
 
         def other_options(env)
